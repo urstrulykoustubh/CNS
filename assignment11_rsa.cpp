@@ -1,6 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+void file()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+}
+
 // Function for extended Euclidean Algorithm
 int ansS, ansT;
 int findGcdExtended(int r1, int r2, int s1, int s2, int t1, int t2)
@@ -30,15 +38,16 @@ int modInverse(int A, int M)
     int x, y;
     int g = findGcdExtended(A, M, 1, 0, 0, 1);
     if (g != 1) {
-        cout << "\n Inverse doesn't exist";
+        cout << "Inverse doesn't exist";
         return 0;
     }
     else {
 
         // m is added to handle negative x
 
+
         int res = (ansS % M + M) % M;
-        cout << "\n Inverse is" << res << endl;
+        cout << "inverse is" << res << endl;
         return res;
     }
 }
@@ -64,33 +73,29 @@ int findGCD(int num1, int num2)
 // Code to demonstrate RSA algorithm
 int main()
 {
+    file();
 
     // Two random prime numbers
-    long long p, q, e, msg;
+    long long p, q, e;
+    string ms;
     //17 31 7 2
 
-    cout << "\n Please enter 2 prime number : ";
-    cin >> p >> q;
+    cout << "Please enter 2 prime number and e and Message to Encript" << endl;
+    cin >> p >> q >> e >> ms;
 
-    cout << "\n Enter value of e : ";
-    cin >> e;
-
-    cout << "\n Enter message to encrpyt : ";
-    cin >> msg;
-    
-    cout << "\n 2 random prime numbers selected are " << p << " " << q << endl;
+    cout << "2 random prime numbers selected are " << p << " " << q << endl;
 
     // First part of public key:
     long long n = p * q;
-    cout << "\n Product of two prime number n is " << n << endl;
+    cout << "Product of two prime number n is " << n << endl;
 
     // Finding other part of public key.
     // e stands for encrypt
 
-    cout << "\n Taken e is " << e << endl;
+    cout << "Taken e is " << e << endl;
 
     long long phi = (p - 1) * (q - 1);
-    cout << "\n phi is " << phi << endl;
+    cout << "phi is " << phi << endl;
 
     while (e < phi) {
         // e must be co-prime to phi and
@@ -101,28 +106,73 @@ int main()
             e++;
     }
 
-    cout << "\n Final e value is " << e << endl;
+    cout << "Final e value is " << e << endl;
 
 
     // Private key (d stands for decrypt)
 
     long long d = modInverse(e, phi);
-    cout << "\n d is " << d << endl;
+    cout << "d is " << d << endl;
 
-    cout << "\n So now our public key is " << "<" << e << "," << n << ">" << endl;
-    cout << "\n So now our private key is " << "<" << d << "," << n << ">" << endl << endl;
+    cout << "\nso now our publissc key is " << "<" << e << "," << n << ">" << endl;
+    cout << "\nso now our private key is " << "<" << d << "," << n << ">" << endl << endl;
+
+
 
     // Message to be encrypted
 
-    cout << "\n Message date is " << msg << endl;
+
+
+
+    cout << "Message date is " << ms << endl;
 
     // Encryption c = (msg ^ e) % n
-    long long c = powM(msg, e, n);
-    cout << "\n Encrypted Message is " << c << endl;
 
-    // Decryption m = (c ^ d) % n
-    long long m = powM(c, d, n);
-    cout << "\n Original Message is " << m << endl;
+
+    string enc = "";
+
+    for (auto it : ms)
+    {
+        int val = it - 'a' + 1;
+        long long c = powM(val, e, n);
+        //cout << val << " " << c << endl;
+        enc += to_string(c);
+        enc += ',';
+    }
+
+    cout << "\nencripted Message is " << enc << endl << endl;
+    int val = 0;
+    string dec = "";
+    for (auto it : enc)
+    {
+
+        if (it == ',')
+        {
+
+            long long m = powM(val, d, n);
+            //cout << val << " " << m << endl;
+            dec += ('a' + m - 1);
+            val = 0;
+            continue;
+        }
+        val *= 10;
+        val += (it - '0');
+
+
+    }
+
+    cout << "Message after decription is " << dec;
+
+
+
+
+
+    //  c = powM(msg, e, n);
+    // cout << "Encripted Message is " << c << endl;
+
+    // // Decryption m = (c ^ d) % n
+    // long long m = powM(c, d, n);
+    // cout << "original Message is " << m << endl;
 
     return 0;
 }
