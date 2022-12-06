@@ -18,7 +18,7 @@ snort -i -2 -c c:\Snort\etc\snort.conf -T
 
 snort -i 5 -c c:\Snort\etc\snort.conf -A console
 
-
+turn off public firewall and ping to any device
 
 keystore:
 "C:\Program Files\Java\jdk1.8.0_202\bin\keytool" -genkeypair -alias NikhilDanapgol -keystore NikhilDanapgol.pfx -storepass Nikhil -validity 365 -keyalg RSA -keysize 2048 -storetype pkcs12
